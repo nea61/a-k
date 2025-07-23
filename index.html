@@ -63,12 +63,13 @@
 
   <img id="bgImage" class="bg-image" src="foto1.jpg" alt="">
 
-  <!-- Müzik -->
+  <!-- ŞARKI -->
   <audio id="bgMusic" autoplay loop>
     <source src="Emre Altuğ - Neyleyim.mp3" type="audio/mpeg">
     Tarayıcınız müziği desteklemiyor.
   </audio>
 
+  <!-- SORULAR -->
   <div id="quiz">
     <div class="question" id="q0">
       <h2>Yıldönümümüz ne zaman?</h2>
@@ -114,7 +115,7 @@
     </div>
   </div>
 
-  <!-- Video final -->
+  <!-- FİNAL VİDEOSU -->
   <video id="finalVideo" class="hidden" controls>
     <source src="video1.mp4" type="video/mp4">
     Tarayıcınız video etiketini desteklemiyor.
@@ -160,21 +161,22 @@
     function finish() {
       const input = document.getElementById("a5").value.trim().toLowerCase();
       if (input === answers.a5) {
-        // Sorular kapanır
         document.getElementById("quiz").classList.add("hidden");
         document.getElementById("bgImage").classList.add("hidden");
 
-        // Müzik durur
+        // MÜZİĞİ DURDUR
         const music = document.getElementById("bgMusic");
         music.pause();
         music.currentTime = 0;
 
-        // Video başlar
-        document.getElementById("finalVideo").classList.remove("hidden");
+        // VİDEOYU BAŞLAT
+        const video = document.getElementById("finalVideo");
+        video.classList.remove("hidden");
+        video.play();
       } else {
         document.getElementById("err5").innerText = "Hmm bir daha düşün ☺";
       }
     }
   </script>
 </body>
-</html> 
+</html>
