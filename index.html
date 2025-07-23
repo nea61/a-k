@@ -4,166 +4,177 @@
   <meta charset="UTF-8">
   <title>♥ Sana Özel Yolculuk ♥</title>
   <style>
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       padding: 0;
       background-color: #000;
       color: #fff;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
       text-align: center;
       overflow: hidden;
     }
     .hidden { display: none; }
     .question {
-      padding: 30px;
       position: relative;
       z-index: 2;
+      max-width: 90%;
     }
     .bg-image {
       position: fixed;
       top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: contain;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       opacity: 0.7;
       z-index: 1;
     }
+    input {
+      padding: 10px;
+      font-size: 18px;
+      margin-top: 10px;
+    }
     button {
+      margin-top: 10px;
       padding: 10px 20px;
-      margin: 10px;
       font-size: 16px;
-      border: none;
-      border-radius: 8px;
       background-color: #ff4081;
       color: white;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
     }
-    input { padding: 10px; font-size: 16px; }
+    button:hover {
+      background-color: #ff1f6d;
+    }
     video {
       width: 100vw;
       height: 100vh;
-      object-fit: cover;
-      z-index: 5;
-      position: fixed;
-      top: 0;
-      left: 0;
+      object-fit: contain;
     }
   </style>
 </head>
 <body>
 
-<!-- Müzik -->
-<audio id="myAudio" autoplay loop>
-  <source src="Emre Altuğ - Neyleyim.mp3" type="audio/mpeg">
-</audio>
+  <img id="bgImage" class="bg-image" src="foto1.jpg" alt="">
 
+  <!-- Müzik -->
+  <audio id="bgMusic" autoplay loop>
+    <source src="Emre Altuğ - Neyleyim.mp3" type="audio/mpeg">
+    Tarayıcınız müziği desteklemiyor.
+  </audio>
 
+  <div id="quiz">
+    <div class="question" id="q0">
+      <h2>Yıldönümümüz ne zaman?</h2>
+      <input type="text" id="dateInput" placeholder="gg.aa.yyyy">
+      <br>
+      <button onclick="checkDate()">Devam Et</button>
+      <p id="err0" style="color:red"></p>
+    </div>
 
-<!-- Sorular -->
-<div id="quizContainer">
+    <div class="question hidden" id="q1">
+      <h2>Soru 1: İlk buluşmamız nerede oldu?</h2>
+      <input type="text" id="a1" placeholder="Cevabını yaz...">
+      <br><button onclick="next(1)">Devam Et</button>
+      <p id="err1" style="color:red"></p>
+    </div>
 
-  <div class="question" id="q0">
-    <img src="foto1.jpg" class="bg-image" alt="">
-    <h2>Yıldönümümüz ne zaman?</h2>
-    <input type="text" id="dateInput" placeholder="gg.aa.yyyy">
-    <br><br>
-    <button onclick="checkDate()">Devam Et</button>
-    <p id="error0" style="color:red;"></p>
+    <div class="question hidden" id="q2">
+      <h2>Soru 2: Beni ilk nerede öptün?</h2>
+      <input type="text" id="a2" placeholder="Cevabını yaz...">
+      <br><button onclick="next(2)">Devam Et</button>
+      <p id="err2" style="color:red"></p>
+    </div>
+
+    <div class="question hidden" id="q3">
+      <h2>Soru 3: En sevdiğim şey nedir?</h2>
+      <input type="text" id="a3" placeholder="Cevabını yaz...">
+      <br><button onclick="next(3)">Devam Et</button>
+      <p id="err3" style="color:red"></p>
+    </div>
+
+    <div class="question hidden" id="q4">
+      <h2>Soru 4: İlk buluşma tarihimiz neydi?</h2>
+      <input type="text" id="a4" placeholder="gg.aa.yyyy">
+      <br><button onclick="next(4)">Devam Et</button>
+      <p id="err4" style="color:red"></p>
+    </div>
+
+    <div class="question hidden" id="q5">
+      <h2>Soru 5: Senden sonra en sevdiğim şey?</h2>
+      <input type="text" id="a5" placeholder="Cevabını yaz...">
+      <br><button onclick="finish()">Bitir</button>
+      <p id="err5" style="color:red"></p>
+    </div>
   </div>
 
-  <div class="question hidden" id="q1">
-    <img src="foto2.jpg" class="bg-image" alt="">
-    <h2>İlk buluşmamız nerede oldu?</h2>
-    <input type="text" id="a1" placeholder="Cevabın">
-    <br><br>
-    <button onclick="checkAnswer(1)">Devam Et</button>
-    <p id="error1" style="color:red;"></p>
-  </div>
+  <!-- Video final -->
+  <video id="finalVideo" class="hidden" controls autoplay>
+    <source src="video1.mp4" type="video/mp4">
+    Tarayıcınız video etiketini desteklemiyor.
+  </video>
 
-  <div class="question hidden" id="q2">
-    <img src="foto3.jpg" class="bg-image" alt="">
-    <h2>Beni ilk nerede öptün?</h2>
-    <input type="text" id="a2" placeholder="Cevabın">
-    <br><br>
-    <button onclick="checkAnswer(2)">Devam Et</button>
-    <p id="error2" style="color:red;"></p>
-  </div>
+  <script>
+    const answers = {
+      a1: "tuck",
+      a2: "vapur",
+      a3: "aysu",
+      a4: "16.03.2021",
+      a5: "trabzonspor"
+    };
 
-  <div class="question hidden" id="q3">
-    <img src="foto4.jpg" class="bg-image" alt="">
-    <h2>En sevdiğim şey?</h2>
-    <input type="text" id="a3" placeholder="Cevabın">
-    <br><br>
-    <button onclick="checkAnswer(3)">Devam Et</button>
-    <p id="error3" style="color:red;"></p>
-  </div>
+    const bgImages = [
+      "foto1.jpg", "foto2.jpg", "foto3.jpg", "foto4.jpg", "foto5.jpg", "foto1.jpg"
+    ];
 
-  <div class="question hidden" id="q4">
-    <img src="foto5.jpg" class="bg-image" alt="">
-    <h2>İlk buluşma tarihimiz?</h2>
-    <input type="text" id="a4" placeholder="gg.aa.yyyy">
-    <br><br>
-    <button onclick="checkAnswer(4)">Devam Et</button>
-    <p id="error4" style="color:red;"></p>
-  </div>
-
-  <div class="question hidden" id="q5">
-    <img src="foto6.jpg" class="bg-image" alt="">
-    <h2>Senden sonra en sevdiğim şey?</h2>
-    <input type="text" id="a5" placeholder="Cevabın">
-    <br><br>
-    <button onclick="finishQuiz()">Bitir</button>
-    <p id="error5" style="color:red;"></p>
-  </div>
-
-</div>
-
-<script>
-  const dogruTarih = "02.04.2021";
-  const cevaplar = {
-    1: "tuck",
-    2: "vapur",
-    3: "aysu",
-    4: "16.03.2021",
-    5: "trabzonspor"
-  };
-
-  function checkDate() {
-    const val = document.getElementById("dateInput").value.trim();
-    if (val === dogruTarih) {
-      document.getElementById("q0").classList.add("hidden");
-      document.getElementById("q1").classList.remove("hidden");
-    } else {
-      document.getElementById("error0").innerText = "Yanlış hatırladın gibi 🙁";
+    function checkDate() {
+      const input = document.getElementById("dateInput").value.trim();
+      if (input === "02.04.2021") {
+        showQuestion(1);
+      } else {
+        document.getElementById("err0").innerText = "Yanlış hatırladın gibi 🙃";
+      }
     }
-  }
 
-  function checkAnswer(qNum) {
-    const input = document.getElementById("a" + qNum).value.trim().toLowerCase();
-    if (input === "") {
-      document.getElementById("error" + qNum).innerText = "Cevabı yazmalısın";
-      return;
+    function next(n) {
+      const input = document.getElementById("a" + n).value.trim().toLowerCase();
+      if (input === answers["a" + n]) {
+        showQuestion(n + 1);
+      } else {
+        document.getElementById("err" + n).innerText = "Hmm bir daha düşün 😊";
+      }
     }
-    if (input === cevaplar[qNum]) {
-      document.getElementById("q" + qNum).classList.add("hidden");
-      document.getElementById("q" + (qNum + 1)).classList.remove("hidden");
-    } else {
-      document.getElementById("error" + qNum).innerText = "Hmm bir daha düşün 😊";
-    }
-  }
 
-  function finishQuiz() {
-    const input = document.getElementById("a5").value.trim().toLowerCase();
-    if (input === cevaplar[5]) {
-      document.getElementById("quizContainer").classList.add("hidden");
-      // Şarkıyı durdur
-      document.getElementById("myAudio").pause();
-      // Videoyu göster
-      document.getElementById("finalVideo").classList.remove("hidden");
-    } else {
-      document.getElementById("error5").innerText = "Bir daha düşün bakalım 🎈";
+    function showQuestion(n) {
+      document.getElementById("q" + (n - 1)).classList.add("hidden");
+      document.getElementById("q" + n).classList.remove("hidden");
+      document.getElementById("bgImage").src = bgImages[n];
     }
-  }
-</script>
 
+    function finish() {
+      const input = document.getElementById("a5").value.trim().toLowerCase();
+      if (input === answers.a5) {
+        // Sorular kapanır
+        document.getElementById("quiz").classList.add("hidden");
+        document.getElementById("bgImage").classList.add("hidden");
+
+        // Müzik durur
+        const music = document.getElementById("bgMusic");
+        music.pause();
+        music.currentTime = 0;
+
+        // Video başlar
+        document.getElementById("finalVideo").classList.remove("hidden");
+      } else {
+        document.getElementById("err5").innerText = "Hmm bir daha düşün ☺";
+      }
+    }
+  </script>
 </body>
 </html>
