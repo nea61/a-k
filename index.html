@@ -115,7 +115,7 @@
   </div>
 
   <!-- Video final -->
-  <video id="finalVideo" class="hidden" controls autoplay>
+  <video id="finalVideo" class="hidden" controls>
     <source src="video1.mp4" type="video/mp4">
     Tarayıcınız video etiketini desteklemiyor.
   </video>
@@ -157,12 +157,27 @@
       document.getElementById("bgImage").src = bgImages[n];
     }
 
-    function finish() {
-      const input = document.getElementById("a5").value.trim().toLowerCase();
-      if (input === answers.a5) {
-        // Sorular kapanır
-        document.getElementById("quiz").classList.add("hidden");
-        document.getElementById("bgImage").classList.add("hidden");
+function finish() {
+  const input = document.getElementById("a5").value.trim().toLowerCase();
+  if (input === answers.a5) {
+    // Sorular kapanır
+    document.getElementById("quiz").classList.add("hidden");
+    document.getElementById("bgImage").classList.add("hidden");
+
+    // Müzik durur
+    const music = document.getElementById("bgMusic");
+    music.pause();
+    music.currentTime = 0;
+
+    // Video başlar
+    const video = document.getElementById("finalVideo");
+    video.classList.remove("hidden");
+    video.play(); // ← BU satırı ekle, autoplay yerine
+  } else {
+    document.getElementById("err5").innerText = "Hmm bir daha düşün ☺";
+  }
+}
+
 
         // Müzik durur
         const music = document.getElementById("bgMusic");
