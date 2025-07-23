@@ -157,27 +157,12 @@
       document.getElementById("bgImage").src = bgImages[n];
     }
 
-function finish() {
-  const input = document.getElementById("a5").value.trim().toLowerCase();
-  if (input === answers.a5) {
-    // Sorular kapanır
-    document.getElementById("quiz").classList.add("hidden");
-    document.getElementById("bgImage").classList.add("hidden");
-
-    // Müzik durur
-    const music = document.getElementById("bgMusic");
-    music.pause();
-    music.currentTime = 0;
-
-    // Video başlar
-    const video = document.getElementById("finalVideo");
-    video.classList.remove("hidden");
-    video.play(); // ← BU satırı ekle, autoplay yerine
-  } else {
-    document.getElementById("err5").innerText = "Hmm bir daha düşün ☺";
-  }
-}
-
+    function finish() {
+      const input = document.getElementById("a5").value.trim().toLowerCase();
+      if (input === answers.a5) {
+        // Sorular kapanır
+        document.getElementById("quiz").classList.add("hidden");
+        document.getElementById("bgImage").classList.add("hidden");
 
         // Müzik durur
         const music = document.getElementById("bgMusic");
@@ -192,4 +177,4 @@ function finish() {
     }
   </script>
 </body>
-</html>
+</html> 
